@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سلة التسوق - متجر الفقمة</title>
+<style>
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f7f9;
+    padding: 20px;
+    color: #2c3e50;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin-bottom: 30px;
+}
+.logo { font-size: 24px; font-weight: bold; color: #1a73e8; }
+h1 { text-align: center; margin-bottom: 20px; color: #0d47a1; }
+.cart-list {
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+}
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px 25px;
+    border-bottom: 1px solid #eee;
+}
+.cart-item:last-child { border-bottom: none; }
+.cart-item span { font-weight: bold; color: #0077be; }
+.empty-cart {
+    text-align: center;
+    font-size: 1.2rem;
+    padding: 50px;
+    color: #888;
+}
+.clear-btn {
+    display: block;
+    margin: 30px auto;
+    background: #ff6d00;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.clear-btn:hover { background: #1a73e8; }
+</style>
+</head>
+<body>
+
+<header>
+    <div class="logo">سلة التسوق 🦭</div>
+</header>
+
+<h1>المنتجات في سلتك</h1>
+<div id="cart" class="cart-list"></div>
+
+<button class="clear-btn" onclick="clearCart()">إفراغ السلة</button>
+
+<script>
+// جلب العناصر من localStorage
+function loadCart() {
+    const cartDiv = document.getElementById('cart');
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    
+    cartDiv.innerHTML = ''; // مسح أي شيء سابق
+    
+    if(cartItems.length === 0){
+        cartDiv.innerHTML = '<div class="empty-cart">سلتك فارغة 😢</div>';
+    } else {
+        cartItems.forEach((item, index) => {
+            const div = document.createElement('div');
+            div.className = 'cart-item';
+            div.innerHTML = `<span>${index + 1}. ${item}</span>`;
+            cartDiv.appendChild(div);
+        });
+    }
+}
+
+// مسح السلة
+function clearCart() {
+    localStorage.removeItem('cartItems');
+    loadCart();
+}
+
+// تحميل السلة عند فتح الصفحة
+window.addEventListener('DOMContentLoaded', loadCart);
+</script>
+
+</body>
+</html>
